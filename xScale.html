@@ -1,6 +1,3 @@
-<!-- TODO: 
-	do not display too small bins
---> 
 <html><head>
 	<meta charset="utf-8" />
 	<style>
@@ -31,20 +28,34 @@ HTMLElement.prototype.xScale = function(min, max){
 		if(!max) max = this.max;
 		this.innerHTML = '';
 		for(var t = Math.floor(min)-1; t<=max; t++){
+
 			var style = 'position: absolute; top:0; text-align: center; ';
 			var x = (t-min) / (max-min) * this.offsetWidth;
 			var dx = this.offsetWidth / (max-min);
+
+			// Shrink large bin at begining
 			if(x<0) {
 				dx = dx+x;
 				x = 0;
 			}else
 				style += 'border-left: 1px solid grey; ';
+			// Shrink large bin at end
 			if(x+dx>this.offsetWidth) {
 				dx = this.offsetWidth-x;
 			}else
 				style += 'border-right: 1px solid grey; ';
-			style += 'left:'+x+'px; width: '+dx+'px; ';
-			this.innerHTML += '<div class="bin" style="'+style+'">'+t+'</div>';
+
+//			style += 'left:'+x+'px; width: '+dx+'px; ';
+			style += 'left:'+x+'px; ';
+
+			var bin = document.createElement("div");
+			bin.className = 'bin';
+			bin.style = style;
+			bin.innerHTML = t;
+			this.appendChild(bin);
+			if(bin.offsetWidth>dx)
+				bin.innerHTML = '&nbsp;'; 
+			bin.style.width = dx;
 		}
 	}
 	
