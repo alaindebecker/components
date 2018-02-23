@@ -20,11 +20,11 @@ HTMLElement.prototype.xSplit = function(){
 	// Initialize
 	var east  = this.children[0];
 	var right = this.children[1];
-	east.style  = 'position: absolute; left:0; width: 100px; top:0; bottom: 0; ';
-	right.style = 'position: absolute; left:102px; right: 0; top:0; bottom: 0; ';
+	east.style  = 'position: absolute; left:0; width: 25%; top:0; bottom: 0; ';
+	right.style = 'position: absolute; 25%; right: 0; top:0; bottom: 0; ';
 
 	var split = document.createElement('div');
-	split.style = 'width: 19px; position: absolute; left: 100px; top:0; bottom: 0; cursor: col-resize; border-left: 2px solid grey; ';
+	split.style = 'position: absolute; left: 25%; width: 1.5em; top:0; bottom: 0; cursor: col-resize; border-left: 2px solid grey; ';
 	this.appendChild(split);
 	
 	var drag = null;
@@ -35,7 +35,7 @@ HTMLElement.prototype.xSplit = function(){
 	} 
 	// Move drag
 	this.onmousemove = (event) => {
-		if(drag){
+		if(drag && this.offsetLeft<=event.clientX && event.clientX<=this.offsetLeft+this.offsetWidth){
 			split.style.left = event.clientX - this.offsetLeft;
 			east.style.width = event.clientX - this.offsetLeft;
 			right.style.left = event.clientX - this.offsetLeft + 2;
