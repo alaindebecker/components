@@ -1,0 +1,64 @@
+<html><head>
+	<meta charset="utf-8" />
+	<style>
+		* { font-family: sans-serif; font-size: small; }
+		#main { position: relative; margin: 50px; height: 200px;  }
+		
+		/* CSS for sub panels */
+		#main *:nth-child(1) { background: lightgreen; }
+		#main *:nth-child(2) { background: lightyellow; }
+	</style>
+
+
+</head><body>
+	<div id="main">
+		<div id="north">north</div>
+		<div id="south">south</div>
+	</div>
+
+
+<script>
+HTMLElement.prototype.ySplit = function(){
+	// Initialize
+	var north = this.children[0];
+	var south = this.children[1];
+	north.style = 'position: absolute; left: 0; right: 0; top:0; height: 25%; ';
+	south.style = 'position: absolute; left: 0; right: 0; bottom: 0; top: 25%';
+
+	var split = document.createElement('div');
+	split.style = 'position: absolute; left: 0; right:0; top:25%; height: 1.5em; cursor: ns-resize; border-top: 2px solid grey; ';
+	this.appendChild(split);
+	
+	var drag = null;
+	
+	// Start drag
+	split.onmousedown = (event) => {
+		drag = event.clientY - this.offsetTop;
+	} 
+	// Move drag
+	this.onmousemove = (event) => {
+		if(drag && this.offsetTop <= event.clientY && event.clientY <= this.offsetTop+this.offsetHeight){
+			split.style.top    = event.clientY - this.offsetTop;
+			north.style.height = event.clientY - this.offsetTop;
+			south.style.top    = event.clientY - this.offsetTop + 2;
+		}
+	}
+	// End drag
+	onmouseup = (event) => {
+		drag = null;
+	} 
+	
+	// Show select
+	split.onmouseenter = (event) => {
+		split.style.background = 'rgba(0,0,0,0.1)';
+	}
+	split.onmouseleave = (event) => {
+		split.style.background = '';
+	}
+	
+}
+
+document.getElementById('main').ySplit();
+</script>
+
+</body></html>
