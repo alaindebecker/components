@@ -1,0 +1,100 @@
+<html><head>
+	<meta charset="utf-8" />
+	<style>
+		* { font-family: sans-serif; font-size: small; }
+		#main { position: relative; margin: 50px; height: 100px;  }
+		
+		/* Css for sub panels */
+		#main *:nth-child(1) { background: pink; }
+		#main *:nth-child(2) { background: lightyellow; }
+		#main *:nth-child(3) { background: lightgreen; }
+		#main *:nth-child(4) { background: lightblue; }
+	</style>
+	
+</head><body>
+	<div id="main">
+		<div>head</div>
+		<div>top</div>
+		<div>left</div>
+		<div>panel</div>
+	</div>
+
+<script>
+HTMLElement.prototype.xySplit = function(){
+	// Initialize
+	var head  = this.children[0];
+	var top   = this.children[1];
+	var left  = this.children[2];
+	var panel = this.children[3];
+	head.style  = 'position: absolute; left:0;   top:0;     width: 25%; height: 25%; ';
+	top.style   = 'position: absolute; right: 0; top:0;     width: 75%; height: 25%; ';
+	left.style  = 'position: absolute; left:0;    top: 25%; width: 25%; bottom: 0; ';
+	panel.style = 'position: absolute; left: 25%; top: 25%; right: 0; bottom: 0; ';
+
+	var xSplit = document.createElement('div');
+	xSplit.style = 'position: absolute; left: 25%; width: 1.5em; top:0; bottom: 0; cursor: col-resize; border-left: 2px solid grey; ';
+	this.appendChild(xSplit);
+
+	var ySplit = document.createElement('div');
+	ySplit.style = 'position: absolute; top: 25%; height: 1.5em; left:0; right: 0; cursor: row-resize; border-top: 2px solid grey; ';
+	this.appendChild(ySplit);
+
+	var xDrag = null;
+	var yDrag = null;
+
+	
+	// Start drag
+	xSplit.onmousedown = (event) => {
+		xDrag = event.clientX - this.offsetLeft;
+		xSplit.style.cursor = 'ew-resize';
+	} 
+	ySplit.onmousedown = (event) => {
+		yDrag = event.clientY - this.offsetTop;
+		ySplit.style.cursor = 'ns-resize';
+	} 
+
+	// Move drag
+	this.onmousemove = (event) => {
+		if(xDrag && this.offsetLeft <= event.clientX && event.clientX <= this.offsetLeft+this.offsetWidth){
+			xSplit.style.left = event.clientX - this.offsetLeft ;
+			head.style.width  = event.clientX - this.offsetLeft ;
+			top.style.left    = event.clientX - this.offsetLeft +2;
+			left.style.width  = event.clientX - this.offsetLeft ;
+			panel.style.left  = event.clientX - this.offsetLeft +2;
+		}
+		if(yDrag && this.offsetTop <= event.clientY && event.clientY <= this.offsetTop+this.offsetHeight){
+			ySplit.style.top  = event.clientY - this.offsetTop;
+			head.style.height = event.clientY - this.offsetTop;
+			top.style.height  = event.clientY - this.offsetTop;
+			left.style.top    = event.clientY - this.offsetTop +2
+			panel.style.top   = event.clientY - this.offsetTop +2;
+		}
+	}
+		// End drag
+	onmouseup = (event) => {
+		xDrag = null;
+		yDrag = null;
+		xSplit.style.cursor = 'col-resize';
+		ySplit.style.cursor = 'row-resize';
+	} 
+
+	// onhover
+	xSplit.onmouseenter = (event) => {
+		xSplit.style.background = 'rgba(0,0,0,0.1)';
+	}
+	xSplit.onmouseleave = (event) => {
+		xSplit.style.background = '';
+	}
+	ySplit.onmouseenter = (event) => {
+		ySplit.style.background = 'rgba(0,0,0,0.1)';
+	}
+	ySplit.onmouseleave = (event) => {
+		ySplit.style.background = '';
+	}
+
+}
+
+document.getElementById('main').xySplit();
+</script>
+
+</body></html>
