@@ -32,6 +32,7 @@ HTMLElement.prototype.xSplit = function(){
 	// Start drag
 	split.onmousedown = (event) => {
 		drag = event.clientX - event.target.offsetLeft;
+		split.style.cursor = 'ew-resize';
 	} 
 	// Move drag
 	this.onmousemove = (event) => {
@@ -44,6 +45,7 @@ HTMLElement.prototype.xSplit = function(){
 	// End drag
 	onmouseup = (event) => {
 		drag = null;
+		split.style.cursor = 'col-resize';
 	} 
 	
 	// Show select
