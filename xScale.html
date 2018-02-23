@@ -2,10 +2,9 @@
 	<meta charset="utf-8" />
 	<style>
 		* { font-family: sans-serif; font-size: small; }
-		#main { position: relative; margin: 50px; height: 100px; background: whitesmoke; 
-			overflow: hidden}
-		#main * { background: lightyellow; }
-
+		#main { position: relative; margin: 50px; height: 100px; background: whitesmoke; }
+/* How to css the bins */
+		#main .bin { background: lightyellow; }
 	</style>
 	
 </head><body>
@@ -91,6 +90,7 @@ HTMLElement.prototype.xScale = function(min, max){
 	this.min = min;
 	this.max = max;
 	this.drag = null;
+	this.style += '; overflow: hidden; ';
 	this.scale = document.createElement('div');
 	this.scale.innerHTML = 'scale';
 	this.appendChild(this.scale);
