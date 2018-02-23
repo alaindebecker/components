@@ -7,21 +7,20 @@
 		/* Css for sub panels */
 		#main *:nth-child(1) { background: lightgreen; }
 		#main *:nth-child(2) { background: lightyellow; }
-
 	</style>
 	
 </head><body>
 	<div id="main">
-		<div>left</div>
-		<div>right</div>
+		<div id="east">east</div>
+		<div id="west">west</div>
 	</div>
 
 <script>
 HTMLElement.prototype.xSplit = function(){
 	// Initialize
-	var left  = this.children[0];
+	var east  = this.children[0];
 	var right = this.children[1];
-	left.style  = 'position: absolute; left:0; width: 100px; top:0; bottom: 0; ';
+	east.style  = 'position: absolute; left:0; width: 100px; top:0; bottom: 0; ';
 	right.style = 'position: absolute; left:102px; right: 0; top:0; bottom: 0; ';
 
 	var split = document.createElement('div');
@@ -36,10 +35,9 @@ HTMLElement.prototype.xSplit = function(){
 	} 
 	// Move drag
 	this.onmousemove = (event) => {
-		console.log(left);
 		if(drag){
 			split.style.left = event.clientX - this.offsetLeft;
-			left.style.width = event.clientX - this.offsetLeft;
+			east.style.width = event.clientX - this.offsetLeft;
 			right.style.left = event.clientX - this.offsetLeft + 2;
 		}
 	}
