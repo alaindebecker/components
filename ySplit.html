@@ -26,7 +26,7 @@ HTMLElement.prototype.ySplit = function(){
 	south.style = 'position: absolute; left: 0; right: 0; bottom: 0; top: 25%';
 
 	var split = document.createElement('div');
-	split.style = 'position: absolute; left: 0; right:0; top:25%; height: 1.5em; cursor: ns-resize; border-top: 2px solid grey; ';
+	split.style = 'position: absolute; left: 0; right:0; top:25%; height: 1.5em; cursor: row-resize; border-top: 2px solid grey; ';
 	this.appendChild(split);
 	
 	var drag = null;
@@ -34,6 +34,7 @@ HTMLElement.prototype.ySplit = function(){
 	// Start drag
 	split.onmousedown = (event) => {
 		drag = event.clientY - this.offsetTop;
+		split.style.cursor = 'ns-resize';
 	} 
 	// Move drag
 	this.onmousemove = (event) => {
@@ -46,6 +47,7 @@ HTMLElement.prototype.ySplit = function(){
 	// End drag
 	onmouseup = (event) => {
 		drag = null;
+		split.style.cursor = 'row-resize';
 	} 
 	
 	// Show select
