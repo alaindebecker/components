@@ -1,8 +1,5 @@
 <!-- TODO: 
-	pixel(value) 
-	value(pixel)
-	center large bin on main rather than bin
-	do not displa too small bins
+	do not display too small bins
 --> 
 <html><head>
 	<meta charset="utf-8" />
@@ -20,15 +17,32 @@
 <script>
 HTMLElement.prototype.xScale = function(min, max){
 
+	// Interface 
+	this.pixel = (value)=>{
+		return (value-this.min) / (this.max-this.min) * this.offsetWidth;
+	}
+	this.value = (pixel)=>{
+		return pixel/this.offsetWidth * (this.max-this.min) + this.min;
+	}
+	
 	// Redraw
 	this.draw = (min, max) => {
 		if(!min) min = this.min;
 		if(!max) max = this.max;
 		this.innerHTML = '';
 		for(var t = Math.floor(min)-1; t<=max; t++){
+			var style = 'position: absolute; top:0; text-align: center; ';
 			var x = (t-min) / (max-min) * this.offsetWidth;
 			var dx = this.offsetWidth / (max-min);
-			var style = 'position: absolute; top:0; border-left: 1px solid grey; text-align: center; ';
+			if(x<0) {
+				dx = dx+x;
+				x = 0;
+			}else
+				style += 'border-left: 1px solid grey; ';
+			if(x+dx>this.offsetWidth) {
+				dx = this.offsetWidth-x;
+			}else
+				style += 'border-right: 1px solid grey; ';
 			style += 'left:'+x+'px; width: '+dx+'px; ';
 			this.innerHTML += '<div class="bin" style="'+style+'">'+t+'</div>';
 		}
@@ -40,27 +54,23 @@ HTMLElement.prototype.xScale = function(min, max){
 	}
 	this.onmousemove = (event) => {
 		if(this.drag){
-			var x = event.clientX - this.offsetLeft;
-			var min = (this.drag-x)/this.offsetWidth *(this.max-this.min) + this.min;
-			var max = (this.drag-x)/this.offsetWidth * (this.max-this.min) + this.max;
-			this.draw(min, max);
-		}
+			this.draw(
+				this.value(this.drag-event.clientX+this.offsetLeft),
+				this.value(this.drag-event.clientX+this.offsetLeft+this.offsetWidth) 
+		)}
 	}
 	this.onmouseup = (event) => {
 		if(this.drag){
-			var x = event.clientX - this.offsetLeft;
-			var min = (this.drag-x)/this.offsetWidth * (this.max-this.min) + this.min;
-			var max = (this.drag-x)/this.offsetWidth * (this.max-this.min) + this.max;
-			this.min = min;
-			this.max = max;
+			[this.min, this.max] = [
+				this.value(this.drag-event.clientX+this.offsetLeft),
+				this.value(this.drag-event.clientX+this.offsetLeft+this.offsetWidth)];
 			this.draw();
 		}
 		this.drag = null;
 	}
 	//Dilatation
 	this.onwheel = (event) => {
-		var x = event.clientX - this.offsetLeft;
-		var t = x/this.offsetWidth * (this.max-this.min) + this.min;
+		var t = this.value(event.clientX - this.offsetLeft);
 		this.min = (1+event.deltaY/100)*(this.min-t) + t;
 		this.max = (1+event.deltaY/100)*(this.max-t) + t;
 		this.draw();
