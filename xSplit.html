@@ -4,15 +4,16 @@
 		* { font-family: sans-serif; font-size: small; }
 		#main { position: relative; margin: 50px; height: 100px;  }
 		
-		#left  { background: lightgreen;}
-		#right { background: lightyellow;}
+		/* Css for sub panels */
+		#main *:nth-child(1) { background: lightgreen; }
+		#main *:nth-child(2) { background: lightyellow; }
 
 	</style>
 	
 </head><body>
 	<div id="main">
-		<div id="left">left</div>
-		<div id="right">right</div>
+		<div>left</div>
+		<div>right</div>
 	</div>
 
 <script>
