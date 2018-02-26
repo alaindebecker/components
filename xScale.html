@@ -3,8 +3,8 @@
 	<style>
 		* { font-family: sans-serif; font-size: small; }
 		#main { position: relative; margin: 50px; height: 100px; background: whitesmoke; }
-/* How to css the bins */
 		#main .bin { background: lightyellow; }
+
 	</style>
 	
 </head><body>
@@ -15,49 +15,11 @@ HTMLElement.prototype.xScale = function(min, max){
 
 	// Interface 
 	this.pixel = (value)=>{
-		return (value-this.min) / (this.max-this.min) * this.offsetWidth;
+		return pixel(value, this.min, this.max);
 	}
 	this.value = (pixel)=>{
-		return pixel/this.offsetWidth * (this.max-this.min) + this.min;
+		return value(pixel, this.min, this.max);
 	}
-	
-	// Redraw
-	this.draw = (min, max) => {
-		if(!min) min = this.min;
-		if(!max) max = this.max;
-		this.innerHTML = '';
-		for(var t = Math.floor(min)-1; t<=max; t++){
-
-			var style = 'position: absolute; top:0; text-align: center; ';
-			var x = (t-min) / (max-min) * this.offsetWidth;
-			var dx = this.offsetWidth / (max-min);
-
-			// Shrink large bin at begining
-			if(x<0) {
-				dx = dx+x;
-				x = 0;
-			}else
-				style += 'border-left: 1px solid grey; ';
-			// Shrink large bin at end
-			if(x+dx>this.offsetWidth) {
-				dx = this.offsetWidth-x;
-			}else
-				style += 'border-right: 1px solid grey; ';
-
-//			style += 'left:'+x+'px; width: '+dx+'px; ';
-			style += 'left:'+x+'px; ';
-
-			var bin = document.createElement("div");
-			bin.className = 'bin';
-			bin.style = style;
-			bin.innerHTML = t;
-			this.appendChild(bin);
-			if(bin.offsetWidth>dx)
-				bin.innerHTML = '&nbsp;'; 
-			bin.style.width = dx;
-		}
-	}
-	
 	// Translation
 	this.onmousedown = (event) => {
 		this.drag = event.clientX - this.offsetLeft;
@@ -86,15 +48,63 @@ HTMLElement.prototype.xScale = function(min, max){
 		this.draw();
 	}
 
+	// Change of coordinates
+	pixel = (value, min, max)=>{
+		return (value-min) / (max-min) * this.offsetWidth;
+	}
+	value = (pixel, min, max)=>{
+		return pixel/this.offsetWidth * (max-min) + min;
+	}
+
+	// Redraw
+	this.draw = (min, max) => {
+		if(!min) min = this.min;
+		if(!max) max = this.max;
+		this.innerHTML = '';
+		for(var t = Math.floor(min)-1; t<=max; t++){
+
+			var style = 'position: absolute; top:0; text-align: center; ';
+			var x = pixel(t, min, max);
+			var dx = pixel(t+1, min, max) - x;
+
+			// Shrink large bin at begining of line
+			if(x<0) {
+				dx = dx+x;
+				x = 0;
+			}else
+				style += 'border-left: 1px solid grey; ';
+				
+			// Shrink large bin at end of line
+			if(x+dx>this.offsetWidth) {
+				dx = this.offsetWidth-x;
+			}else
+				style += 'border-right: 1px solid grey; ';
+
+			style += 'left:'+x+'px; ';
+
+			var bin = document.createElement("div");
+			bin.className = 'bin';
+			bin.style = style;
+			bin.innerHTML = t;
+			this.appendChild(bin);
+			if(bin.offsetWidth>dx)
+				bin.innerHTML = '&nbsp;'; 
+			bin.style.width = dx;
+		}
+	}
+	
 	// Intitalize
 	this.min = min;
 	this.max = max;
 	this.drag = null;
-	this.style += '; overflow: hidden; ';
+
+	this.style += 'overflow: hidden';
 	this.scale = document.createElement('div');
 	this.scale.innerHTML = 'scale';
 	this.appendChild(this.scale);
 	this.draw();
+
+	
 }
 
 document.getElementById('main').xScale(10, 30);
