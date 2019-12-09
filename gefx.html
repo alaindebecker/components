@@ -2,15 +2,16 @@
 
 <style>
 //	svg { background: lightyellow; }
+
 	circle:hover { stroke: black; z-index: 1; }
 	polyline { marker-mid: url(#arrow); fill:none; stroke: darkgrey; }
 	#arrow { fill:darkgrey; stroke: darkgrey; }
+	#arrow:hover { fill:black; stroke: black; }
 
 </style>
 
 <script id="api">
-var arrowPosition = .5;
-
+var arrowPosition = .618;
 
 function copyNode(proto){
 	var node = proto.cloneNode(true);
@@ -20,17 +21,26 @@ function copyNode(proto){
 	return node;
 }
 function moveNode(node, x, y){
-	// Check if stay on board
-	node.setAttribute('cx', x);
-	node.setAttribute('cy', y);
+	//TODO: Check if stay on board
+	var screen = document.querySelector('svg').getBoundingClientRect();
+	if(screen.left<x && x<screen.right)
+		node.setAttribute('cx', x);
+	if(screen.top<y && y<screen.bottom)
+		node.setAttribute('cy', y);
 	drawEdges();
 }
 function createEdge(source, target){
+	console.log(source, target);
 	var edge = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
+	edge.id = new Date().getTime();
 	edge.setAttribute("source", source.id);
 	edge.setAttribute("target", target.id);
-	// TODO: before all nodes
-	document.querySelector('svg').appendChild(edge);
+	document.querySelector('#svg_edges').appendChild(edge);
+
+	var mouse = document.createElementNS("http://www.w3.org/2000/svg", 'use');
+	mouse.setAttribute('href', '#'+edge.id);
+	mouse.setAttribute('onclick', "clickArrow(this)");
+	document.querySelector('#svg_edges').appendChild(mouse);
 	drawEdges();
 }
 function drawEdges(){
@@ -53,7 +63,6 @@ function drawEdges(){
 
 <script id="gui">
 var drag;
-
 function mousedown(event){
 	drag = event.target;
 	event.preventDefault();
@@ -62,12 +71,10 @@ function mousedown(event){
 		drag.y = drag.getAttribute("cy");
 		drag.dx = event.clientX - drag.x;
 		drag.dy = event.clientY - drag.y;
-		var svg = document.querySelector('svg');
-		//TODO: After all edges
-		svg.insertBefore(drag, svg.firstChild);
+		var nodes = document.querySelector('#svg_nodes');
+		nodes.insertBefore(drag, nodes.firstChild);
 	}
 }
-
 onmousemove = (event) => {
 	if(drag){
 		if(drag.classList.contains("prototype")){
@@ -77,26 +84,24 @@ onmousemove = (event) => {
 		moveNode(drag, event.clientX-drag.dx, event.clientY-drag.dy);
 	}
 }
-
 onmouseup = (event) => {
-	if(drag!=event.target){
+	// TODO: May be called foe nodes out of the board
+	if(drag && event.target && drag!=event.target){
 		createEdge(event.target, drag);
 		moveNode(drag, drag.x, drag.y);
 	}
 	drag = null;
 }
-
+function cutArrow(event){
+	if(!drag)
+		console.log(!drag, event);
+}
+function clickArrow(event){
+	console.log(!drag, event);
+}
 </script>
 
 <svg width="100%" height="100%">
-	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="11"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_fbb4ae')" />
-	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="36"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_b3cde3')" />
-	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="61"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_ccebc5')" />
-	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="86"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_decbe4')" />
-	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="111" r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_fed9a6')" />
-	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="136" r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_ffffcc')" />
-	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="161" r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_e6e6e6')" />
-
 	<radialGradient id="ball_fbb4ae" cx="50%" cy="50%" r="50%" fx="70%" fy="30%">
 		<stop offset="0%"   stop-color="white"  stop-opacity="100%"/>
 		<stop offset="80%" stop-color="#fbb4ae" stop-opacity="100%"/>
@@ -121,6 +126,7 @@ onmouseup = (event) => {
 		<stop offset="0%"   stop-color="white"  stop-opacity="100%"/>
 		<stop offset="80%" stop-color="#fed9a6" stop-opacity="100%"/>
 	</radialGradient>
+
 	<radialGradient id="ball_ffffcc" cx="50%" cy="50%" r="50%" fx="70%" fy="30%">
 		<stop offset="0%"   stop-color="white"  stop-opacity="100%"/>
 		<stop offset="80%" stop-color="#ffffcc" stop-opacity="100%"/>
@@ -137,4 +143,16 @@ onmouseup = (event) => {
 		</marker>
 	</defs>
 
+	<g id="svg_edges"></g>
+
+	<g id="svg_nodes">
+	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="11"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_fbb4ae')" />
+	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="36"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_b3cde3')" />
+	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="61"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_ccebc5')" />
+	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="86"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_decbe4')" />
+	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="111" r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_fed9a6')" />
+	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="136" r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_ffffcc')" />
+	<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="161" r="10" stroke="darkgrey" stroke-width="1" fill="url('#ball_e6e6e6')" />
+	</g>
 </svg>
+
