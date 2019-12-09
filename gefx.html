@@ -25,18 +25,16 @@ function moveNode(node, x, y){
 	node.setAttribute('cy', y);
 	drawEdges();
 }
-
 function createEdge(source, target){
 	var edge = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
 	edge.setAttribute("source", source.id);
 	edge.setAttribute("target", target.id);
+	// TODO: before all nodes
 	document.querySelector('svg').appendChild(edge);
 	drawEdges();
 }
-
 function drawEdges(){
 	for(var edge of document.querySelectorAll('polyline')){
-//		console.log(edge);
 		var source = document.getElementById(edge.getAttribute('source'));
 		var target = document.getElementById(edge.getAttribute('target'));
 		var x1 = source.getAttribute('cx');
@@ -48,7 +46,6 @@ function drawEdges(){
 		
 		var points = x1+','+y1+' '+x2+','+y2+' '+x3+','+y3;
 		edge.setAttribute("points", points);
-
 	}
 }
 </script>
@@ -66,6 +63,7 @@ function mousedown(event){
 		drag.dx = event.clientX - drag.x;
 		drag.dy = event.clientY - drag.y;
 		var svg = document.querySelector('svg');
+		//TODO: After all edges
 		svg.insertBefore(drag, svg.firstChild);
 	}
 }
