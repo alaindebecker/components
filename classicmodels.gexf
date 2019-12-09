@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.3" version="1.3" xmlns:viz="http://www.gexf.net/1.3/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.3 http://www.gexf.net/1.3/gexf.xsd">
+  <meta lastmodifieddate="2019-12-08">
+    <creator>Gephi 0.9</creator>
+    <description></description>
+  </meta>
+  <graph defaultedgetype="directed" mode="static">
+    <attributes class="node" mode="static">
+      <attribute id="parent" title="parent" type="integer"></attribute>
+      <attribute id="name" title="name" type="string"></attribute>
+      <attribute id="e-mail" title="e-mail" type="string"></attribute>
+      <attribute id="jobtitle" title="jobtitle" type="string"></attribute>
+      <attribute id="office" title="office" type="string"></attribute>
+      <attribute id="territory" title="territory" type="string"></attribute>
+      <attribute id="nbr_of_customers" title="nbr_of_customers" type="integer"></attribute>
+      <attribute id="cust_cumul" title="cust_cumul" type="integer"></attribute>
+      <attribute id="nbr_of_orders" title="nbr_of_orders" type="integer"></attribute>
+      <attribute id="price" title="price" type="double"></attribute>
+      <attribute id="cost" title="cost" type="double"></attribute>
+      <attribute id="size" title="size" type="float"></attribute>
+    </attributes>
+    <nodes>
+      <node id="1002" label="Murphy Diane">
+        <attvalues>
+          <attvalue for="name" value="Murphy Diane"></attvalue>
+          <attvalue for="e-mail" value="dmurphy@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="President"></attvalue>
+          <attvalue for="office" value="San Francisco"></attvalue>
+          <attvalue for="nbr_of_customers" value="0"></attvalue>
+          <attvalue for="cust_cumul" value="98"></attvalue>
+          <attvalue for="nbr_of_orders" value="0"></attvalue>
+          <attvalue for="price" value="0.0"></attvalue>
+          <attvalue for="cost" value="0.0"></attvalue>
+        </attvalues>
+        <viz:size value="5.59512"></viz:size>
+        <viz:position x="-0.32036138" y="39.17752"></viz:position>
+        <viz:color r="191" g="191" b="191"></viz:color>
+      </node>
+      <node id="1056" label="Patterson Mary">
+        <attvalues>
+          <attvalue for="parent" value="1002"></attvalue>
+          <attvalue for="name" value="Patterson Mary"></attvalue>
+          <attvalue for="e-mail" value="mpatterso@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="VP Sales"></attvalue>
+          <attvalue for="office" value="San Francisco"></attvalue>
+          <attvalue for="nbr_of_customers" value="0"></attvalue>
+          <attvalue for="cust_cumul" value="98"></attvalue>
+          <attvalue for="nbr_of_orders" value="0"></attvalue>
+          <attvalue for="price" value="0.0"></attvalue>
+          <attvalue for="cost" value="0.0"></attvalue>
+        </attvalues>
+        <viz:size value="5.59512"></viz:size>
+        <viz:position x="0.0012473147" y="-0.001071124"></viz:position>
+        <viz:color r="191" g="191" b="191"></viz:color>
+      </node>
+      <node id="1076" label="Firrelli Jeff">
+        <attvalues>
+          <attvalue for="parent" value="1002"></attvalue>
+          <attvalue for="name" value="Firrelli Jeff"></attvalue>
+          <attvalue for="e-mail" value="jfirrelli@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="VP Marketing"></attvalue>
+          <attvalue for="office" value="San Francisco"></attvalue>
+          <attvalue for="nbr_of_customers" value="0"></attvalue>
+          <attvalue for="cust_cumul" value="0"></attvalue>
+          <attvalue for="nbr_of_orders" value="0"></attvalue>
+          <attvalue for="price" value="0.0"></attvalue>
+          <attvalue for="cost" value="0.0"></attvalue>
+        </attvalues>
+        <viz:size value="1.0"></viz:size>
+        <viz:position x="-0.8626433" y="53.289375"></viz:position>
+        <viz:color r="191" g="191" b="191"></viz:color>
+      </node>
+      <node id="1088" label="Patterson William">
+        <attvalues>
+          <attvalue for="parent" value="1056"></attvalue>
+          <attvalue for="name" value="Patterson William"></attvalue>
+          <attvalue for="e-mail" value="wpatterson@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales Manager"></attvalue>
+          <attvalue for="office" value="Sydney"></attvalue>
+          <attvalue for="territory" value="APAC"></attvalue>
+          <attvalue for="nbr_of_customers" value="0"></attvalue>
+          <attvalue for="cust_cumul" value="10"></attvalue>
+          <attvalue for="nbr_of_orders" value="0"></attvalue>
+          <attvalue for="price" value="0.0"></attvalue>
+          <attvalue for="cost" value="0.0"></attvalue>
+        </attvalues>
+        <viz:size value="3.3978953"></viz:size>
+        <viz:position x="9.922544" y="-56.724216"></viz:position>
+        <viz:color r="255" g="255" b="171"></viz:color>
+      </node>
+      <node id="1102" label="Bondur Gerard">
+        <attvalues>
+          <attvalue for="parent" value="1056"></attvalue>
+          <attvalue for="name" value="Bondur Gerard"></attvalue>
+          <attvalue for="e-mail" value="gbondur@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales Manager"></attvalue>
+          <attvalue for="office" value="Paris"></attvalue>
+          <attvalue for="territory" value="EMEA"></attvalue>
+          <attvalue for="nbr_of_customers" value="0"></attvalue>
+          <attvalue for="cust_cumul" value="45"></attvalue>
+          <attvalue for="nbr_of_orders" value="0"></attvalue>
+          <attvalue for="price" value="0.0"></attvalue>
+          <attvalue for="cost" value="0.0"></attvalue>
+        </attvalues>
+        <viz:size value="4.8286414"></viz:size>
+        <viz:position x="105.59074" y="39.895798"></viz:position>
+        <viz:color r="171" g="255" b="171"></viz:color>
+      </node>
+      <node id="1143" label="Bow Anthony">
+        <attvalues>
+          <attvalue for="parent" value="1056"></attvalue>
+          <attvalue for="name" value="Bow Anthony"></attvalue>
+          <attvalue for="e-mail" value="abow@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales Manager"></attvalue>
+          <attvalue for="office" value="San Francisco"></attvalue>
+          <attvalue for="territory" value="NOAM"></attvalue>
+          <attvalue for="nbr_of_customers" value="0"></attvalue>
+          <attvalue for="cust_cumul" value="38"></attvalue>
+          <attvalue for="nbr_of_orders" value="0"></attvalue>
+          <attvalue for="price" value="0.0"></attvalue>
+          <attvalue for="cost" value="0.0"></attvalue>
+        </attvalues>
+        <viz:size value="4.663562"></viz:size>
+        <viz:position x="-113.41673" y="24.554892"></viz:position>
+        <viz:color r="171" g="255" b="255"></viz:color>
+      </node>
+      <node id="1165" label="Jennings Leslie">
+        <attvalues>
+          <attvalue for="parent" value="1143"></attvalue>
+          <attvalue for="name" value="Jennings Leslie"></attvalue>
+          <attvalue for="e-mail" value="ljennings@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="San Francisco"></attvalue>
+          <attvalue for="territory" value="NOAM"></attvalue>
+          <attvalue for="nbr_of_customers" value="6"></attvalue>
+          <attvalue for="cust_cumul" value="6"></attvalue>
+          <attvalue for="nbr_of_orders" value="34"></attvalue>
+          <attvalue for="price" value="1081530.54"></attvalue>
+          <attvalue for="cost" value="646322.19"></attvalue>
+        </attvalues>
+        <viz:size value="2.9459102"></viz:size>
+        <viz:position x="-129.49438" y="6.75622"></viz:position>
+        <viz:color r="171" g="255" b="255"></viz:color>
+      </node>
+      <node id="1166" label="Thompson Leslie">
+        <attvalues>
+          <attvalue for="parent" value="1143"></attvalue>
+          <attvalue for="name" value="Thompson Leslie"></attvalue>
+          <attvalue for="e-mail" value="lthompson@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="San Francisco"></attvalue>
+          <attvalue for="territory" value="NOAM"></attvalue>
+          <attvalue for="nbr_of_customers" value="6"></attvalue>
+          <attvalue for="cust_cumul" value="6"></attvalue>
+          <attvalue for="nbr_of_orders" value="14"></attvalue>
+          <attvalue for="price" value="347533.03"></attvalue>
+          <attvalue for="cost" value="209501.56"></attvalue>
+        </attvalues>
+        <viz:size value="2.9459102"></viz:size>
+        <viz:position x="-153.82329" y="15.613719"></viz:position>
+        <viz:color r="171" g="255" b="255"></viz:color>
+      </node>
+      <node id="1188" label="Firrelli Julie">
+        <attvalues>
+          <attvalue for="parent" value="1143"></attvalue>
+          <attvalue for="name" value="Firrelli Julie"></attvalue>
+          <attvalue for="e-mail" value="jfirrelli@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Boston"></attvalue>
+          <attvalue for="territory" value="NOAM"></attvalue>
+          <attvalue for="nbr_of_customers" value="6"></attvalue>
+          <attvalue for="cust_cumul" value="6"></attvalue>
+          <attvalue for="nbr_of_orders" value="14"></attvalue>
+          <attvalue for="price" value="386663.2"></attvalue>
+          <attvalue for="cost" value="234543.89"></attvalue>
+        </attvalues>
+        <viz:size value="2.9459102"></viz:size>
+        <viz:position x="-110.06331" y="47.659973"></viz:position>
+        <viz:color r="171" g="255" b="255"></viz:color>
+      </node>
+      <node id="1216" label="Patterson Steve">
+        <attvalues>
+          <attvalue for="parent" value="1143"></attvalue>
+          <attvalue for="name" value="Patterson Steve"></attvalue>
+          <attvalue for="e-mail" value="spatterson@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Boston"></attvalue>
+          <attvalue for="territory" value="NOAM"></attvalue>
+          <attvalue for="nbr_of_customers" value="6"></attvalue>
+          <attvalue for="cust_cumul" value="6"></attvalue>
+          <attvalue for="nbr_of_orders" value="18"></attvalue>
+          <attvalue for="price" value="505875.42"></attvalue>
+          <attvalue for="cost" value="307996.19"></attvalue>
+        </attvalues>
+        <viz:size value="2.9459102"></viz:size>
+        <viz:position x="-79.21956" y="32.642525"></viz:position>
+        <viz:color r="171" g="255" b="255"></viz:color>
+      </node>
+      <node id="1286" label="Tseng Foon Yue">
+        <attvalues>
+          <attvalue for="parent" value="1143"></attvalue>
+          <attvalue for="name" value="Tseng Foon Yue"></attvalue>
+          <attvalue for="e-mail" value="ftseng@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="New-York"></attvalue>
+          <attvalue for="territory" value="NOAM"></attvalue>
+          <attvalue for="nbr_of_customers" value="6"></attvalue>
+          <attvalue for="cust_cumul" value="6"></attvalue>
+          <attvalue for="nbr_of_orders" value="17"></attvalue>
+          <attvalue for="price" value="488212.67"></attvalue>
+          <attvalue for="cost" value="293372.75"></attvalue>
+        </attvalues>
+        <viz:size value="2.9459102"></viz:size>
+        <viz:position x="-105.74712" y="-2.2214773"></viz:position>
+        <viz:color r="171" g="255" b="255"></viz:color>
+      </node>
+      <node id="1323" label="Vanauf George">
+        <attvalues>
+          <attvalue for="parent" value="1143"></attvalue>
+          <attvalue for="name" value="Vanauf George"></attvalue>
+          <attvalue for="e-mail" value="gvanauf@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="New-York"></attvalue>
+          <attvalue for="territory" value="NOAM"></attvalue>
+          <attvalue for="nbr_of_customers" value="8"></attvalue>
+          <attvalue for="cust_cumul" value="8"></attvalue>
+          <attvalue for="nbr_of_orders" value="22"></attvalue>
+          <attvalue for="price" value="669377.05"></attvalue>
+          <attvalue for="cost" value="399780.96"></attvalue>
+        </attvalues>
+        <viz:size value="3.1972246"></viz:size>
+        <viz:position x="-142.29387" y="39.42174"></viz:position>
+        <viz:color r="171" g="255" b="255"></viz:color>
+      </node>
+      <node id="1337" label="Bondur Loui">
+        <attvalues>
+          <attvalue for="parent" value="1102"></attvalue>
+          <attvalue for="name" value="Bondur Loui"></attvalue>
+          <attvalue for="e-mail" value="lbondur@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Paris"></attvalue>
+          <attvalue for="territory" value="EMEA"></attvalue>
+          <attvalue for="nbr_of_customers" value="6"></attvalue>
+          <attvalue for="cust_cumul" value="6"></attvalue>
+          <attvalue for="nbr_of_orders" value="20"></attvalue>
+          <attvalue for="price" value="569485.75"></attvalue>
+          <attvalue for="cost" value="334594.68"></attvalue>
+        </attvalues>
+        <viz:size value="2.9459102"></viz:size>
+        <viz:position x="123.12451" y="23.61323"></viz:position>
+        <viz:color r="171" g="255" b="171"></viz:color>
+      </node>
+      <node id="1370" label="Hernandez Gerard">
+        <attvalues>
+          <attvalue for="parent" value="1102"></attvalue>
+          <attvalue for="name" value="Hernandez Gerard"></attvalue>
+          <attvalue for="e-mail" value="ghernande@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Paris"></attvalue>
+          <attvalue for="territory" value="EMEA"></attvalue>
+          <attvalue for="nbr_of_customers" value="7"></attvalue>
+          <attvalue for="cust_cumul" value="7"></attvalue>
+          <attvalue for="nbr_of_orders" value="43"></attvalue>
+          <attvalue for="price" value="1258577.81"></attvalue>
+          <attvalue for="cost" value="753933.1"></attvalue>
+        </attvalues>
+        <viz:size value="3.0794415"></viz:size>
+        <viz:position x="105.10879" y="62.30547"></viz:position>
+        <viz:color r="171" g="255" b="171"></viz:color>
+      </node>
+      <node id="1401" label="Castillo Pamela">
+        <attvalues>
+          <attvalue for="parent" value="1102"></attvalue>
+          <attvalue for="name" value="Castillo Pamela"></attvalue>
+          <attvalue for="e-mail" value="pcastillo@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Paris"></attvalue>
+          <attvalue for="territory" value="EMEA"></attvalue>
+          <attvalue for="nbr_of_customers" value="10"></attvalue>
+          <attvalue for="cust_cumul" value="10"></attvalue>
+          <attvalue for="nbr_of_orders" value="31"></attvalue>
+          <attvalue for="price" value="868220.55"></attvalue>
+          <attvalue for="cost" value="527492.65"></attvalue>
+        </attvalues>
+        <viz:size value="3.3978953"></viz:size>
+        <viz:position x="99.40074" y="16.414814"></viz:position>
+        <viz:color r="171" g="255" b="171"></viz:color>
+      </node>
+      <node id="1501" label="Bott Larry">
+        <attvalues>
+          <attvalue for="parent" value="1102"></attvalue>
+          <attvalue for="name" value="Bott Larry"></attvalue>
+          <attvalue for="e-mail" value="lbott@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="London"></attvalue>
+          <attvalue for="territory" value="EMEA"></attvalue>
+          <attvalue for="nbr_of_customers" value="8"></attvalue>
+          <attvalue for="cust_cumul" value="8"></attvalue>
+          <attvalue for="nbr_of_orders" value="22"></attvalue>
+          <attvalue for="price" value="732096.79"></attvalue>
+          <attvalue for="cost" value="441893.2"></attvalue>
+        </attvalues>
+        <viz:size value="3.1972246"></viz:size>
+        <viz:position x="137.63428" y="31.692862"></viz:position>
+        <viz:color r="171" g="255" b="171"></viz:color>
+      </node>
+      <node id="1504" label="Jones Barry">
+        <attvalues>
+          <attvalue for="parent" value="1102"></attvalue>
+          <attvalue for="name" value="Jones Barry"></attvalue>
+          <attvalue for="e-mail" value="bjones@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="London"></attvalue>
+          <attvalue for="territory" value="EMEA"></attvalue>
+          <attvalue for="nbr_of_customers" value="9"></attvalue>
+          <attvalue for="cust_cumul" value="9"></attvalue>
+          <attvalue for="nbr_of_orders" value="25"></attvalue>
+          <attvalue for="price" value="704853.91"></attvalue>
+          <attvalue for="cost" value="428194.66"></attvalue>
+        </attvalues>
+        <viz:size value="3.3025851"></viz:size>
+        <viz:position x="81.82471" y="47.95012"></viz:position>
+        <viz:color r="171" g="255" b="171"></viz:color>
+      </node>
+      <node id="1611" label="Fixter Andy">
+        <attvalues>
+          <attvalue for="parent" value="1088"></attvalue>
+          <attvalue for="name" value="Fixter Andy"></attvalue>
+          <attvalue for="e-mail" value="afixter@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Sydney"></attvalue>
+          <attvalue for="territory" value="APAC"></attvalue>
+          <attvalue for="nbr_of_customers" value="5"></attvalue>
+          <attvalue for="cust_cumul" value="5"></attvalue>
+          <attvalue for="nbr_of_orders" value="19"></attvalue>
+          <attvalue for="price" value="562582.59"></attvalue>
+          <attvalue for="cost" value="340375.41"></attvalue>
+        </attvalues>
+        <viz:size value="2.7917595"></viz:size>
+        <viz:position x="-3.8445518" y="-73.789536"></viz:position>
+        <viz:color r="255" g="255" b="171"></viz:color>
+      </node>
+      <node id="1612" label="Marsh Peter">
+        <attvalues>
+          <attvalue for="parent" value="1088"></attvalue>
+          <attvalue for="name" value="Marsh Peter"></attvalue>
+          <attvalue for="e-mail" value="pmarsh@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Sydney"></attvalue>
+          <attvalue for="territory" value="APAC"></attvalue>
+          <attvalue for="nbr_of_customers" value="5"></attvalue>
+          <attvalue for="cust_cumul" value="5"></attvalue>
+          <attvalue for="nbr_of_orders" value="19"></attvalue>
+          <attvalue for="price" value="584593.76"></attvalue>
+          <attvalue for="cost" value="353782.01"></attvalue>
+        </attvalues>
+        <viz:size value="2.7917595"></viz:size>
+        <viz:position x="24.15465" y="-82.02539"></viz:position>
+        <viz:color r="255" g="255" b="171"></viz:color>
+      </node>
+      <node id="1619" label="King Tom">
+        <attvalues>
+          <attvalue for="parent" value="1088"></attvalue>
+          <attvalue for="name" value="King Tom"></attvalue>
+          <attvalue for="e-mail" value="tking@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Sydney"></attvalue>
+          <attvalue for="territory" value="APAC"></attvalue>
+          <attvalue for="nbr_of_customers" value="0"></attvalue>
+          <attvalue for="cust_cumul" value="0"></attvalue>
+          <attvalue for="nbr_of_orders" value="0"></attvalue>
+          <attvalue for="price" value="0.0"></attvalue>
+          <attvalue for="cost" value="0.0"></attvalue>
+        </attvalues>
+        <viz:size value="1.0"></viz:size>
+        <viz:position x="36.067234" y="-64.79281"></viz:position>
+        <viz:color r="255" g="255" b="171"></viz:color>
+      </node>
+      <node id="1621" label="Nishi Mami">
+        <attvalues>
+          <attvalue for="parent" value="1056"></attvalue>
+          <attvalue for="name" value="Nishi Mami"></attvalue>
+          <attvalue for="e-mail" value="mnishi@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Tokyo"></attvalue>
+          <attvalue for="territory" value="Japan"></attvalue>
+          <attvalue for="nbr_of_customers" value="5"></attvalue>
+          <attvalue for="cust_cumul" value="5"></attvalue>
+          <attvalue for="nbr_of_orders" value="16"></attvalue>
+          <attvalue for="price" value="457110.07"></attvalue>
+          <attvalue for="cost" value="275928.27"></attvalue>
+        </attvalues>
+        <viz:size value="2.7917595"></viz:size>
+        <viz:position x="-19.506964" y="-14.598759"></viz:position>
+        <viz:color r="255" g="171" b="87"></viz:color>
+      </node>
+      <node id="1625" label="Kato Yoshimi">
+        <attvalues>
+          <attvalue for="parent" value="1621"></attvalue>
+          <attvalue for="name" value="Kato Yoshimi"></attvalue>
+          <attvalue for="e-mail" value="ykato@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Tokyo"></attvalue>
+          <attvalue for="territory" value="Japan"></attvalue>
+          <attvalue for="nbr_of_customers" value="0"></attvalue>
+          <attvalue for="cust_cumul" value="5"></attvalue>
+          <attvalue for="nbr_of_orders" value="0"></attvalue>
+          <attvalue for="price" value="0.0"></attvalue>
+          <attvalue for="cost" value="0.0"></attvalue>
+        </attvalues>
+        <viz:size value="2.7917595"></viz:size>
+        <viz:position x="-29.88744" y="-22.982677"></viz:position>
+        <viz:color r="255" g="171" b="87"></viz:color>
+      </node>
+      <node id="1702" label="Gerard Martin">
+        <attvalues>
+          <attvalue for="parent" value="1102"></attvalue>
+          <attvalue for="name" value="Gerard Martin"></attvalue>
+          <attvalue for="e-mail" value="mgerard@classicmodelcars.com"></attvalue>
+          <attvalue for="jobtitle" value="Sales rep"></attvalue>
+          <attvalue for="office" value="Paris"></attvalue>
+          <attvalue for="territory" value="EMEA"></attvalue>
+          <attvalue for="nbr_of_customers" value="5"></attvalue>
+          <attvalue for="cust_cumul" value="5"></attvalue>
+          <attvalue for="nbr_of_orders" value="12"></attvalue>
+          <attvalue for="price" value="387477.47"></attvalue>
+          <attvalue for="cost" value="230598.84"></attvalue>
+        </attvalues>
+        <viz:size value="2.7917595"></viz:size>
+        <viz:position x="133.88783" y="55.037"></viz:position>
+        <viz:color r="171" g="255" b="171"></viz:color>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="1501" target="1102" kind="1"></edge>
+      <edge id="1" source="1504" target="1102" kind="1"></edge>
+      <edge id="2" source="1056" target="1002" kind="1"></edge>
+      <edge id="3" source="1401" target="1102" kind="1"></edge>
+      <edge id="4" source="1621" target="1056" kind="1"></edge>
+      <edge id="5" source="1611" target="1088" kind="1"></edge>
+      <edge id="6" source="1143" target="1056" kind="1"></edge>
+      <edge id="7" source="1625" target="1621" kind="1"></edge>
+      <edge id="8" source="1076" target="1002" kind="1"></edge>
+      <edge id="9" source="1612" target="1088" kind="1"></edge>
+      <edge id="10" source="1370" target="1102" kind="1"></edge>
+      <edge id="11" source="1165" target="1143" kind="1"></edge>
+      <edge id="12" source="1337" target="1102" kind="1"></edge>
+      <edge id="13" source="1702" target="1102" kind="1"></edge>
+      <edge id="14" source="1166" target="1143" kind="1"></edge>
+      <edge id="15" source="1188" target="1143" kind="1"></edge>
+      <edge id="16" source="1102" target="1056" kind="1"></edge>
+      <edge id="17" source="1323" target="1143" kind="1"></edge>
+      <edge id="18" source="1088" target="1056" kind="1"></edge>
+      <edge id="19" source="1286" target="1143" kind="1"></edge>
+      <edge id="20" source="1619" target="1088" kind="1"></edge>
+      <edge id="21" source="1216" target="1143" kind="1"></edge>
+    </edges>
+  </graph>
+</gexf>
