@@ -13,6 +13,7 @@ var arrowPosition = .618;
 function createNode(id){
 	var node = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 	node.setAttribute('onmousedown', "mousedown(event)");
+	node.setAttribute('onwheel', "wheel(event)");
 	node.setAttribute('cx', "100");
 	node.setAttribute('cy', "100");
 	node.setAttribute('r', "10");
@@ -47,6 +48,9 @@ function removeNode(node){
 }
 function setNodeSize(node, r){
 	node.setAttribute('r', r);
+}
+function getNodeSize(node){
+	return Number(node.getAttribute('r'));
 }
 
 function createEdge(source, target){
@@ -192,7 +196,11 @@ function cutArrow(event){
 function clickArrow(event){
 	console.log(!drag, event);
 }
-
+function wheel(event){
+	var node = event.target;
+	if(!node.classList.contains('prototype'))
+		setNodeSize(node, (1+event.deltaY/25)*getNodeSize(node));
+}
 onload = function(){
 	var svg = document.querySelector('svg');
 	svg.addEventListener("dragenter", function(e) { e.stopPropagation(); e.preventDefault(); }, false);
@@ -251,12 +259,12 @@ onkeydown = function(event){
 	<g id="svg_edges"></g>
 
 	<g id="svg_nodes">
-		<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="11"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#blue')" />
-		<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="36"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#green')" />
-		<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="61"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#yellow')" />
-		<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="86"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#orange')" />
-		<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="111" r="10" stroke="darkgrey" stroke-width="1" fill="url('#red')" />
-		<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="136" r="10" stroke="darkgrey" stroke-width="1" fill="url('#purple')" />
-		<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="161" r="10" stroke="darkgrey" stroke-width="1" fill="url('#grey')" />
+		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="11"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#blue')" />
+		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="36"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#green')" />
+		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="61"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#yellow')" />
+		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="86"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#orange')" />
+		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="111" r="10" stroke="darkgrey" stroke-width="1" fill="url('#red')" />
+		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="136" r="10" stroke="darkgrey" stroke-width="1" fill="url('#purple')" />
+		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="161" r="10" stroke="darkgrey" stroke-width="1" fill="url('#grey')" />
 	</g>
 </svg>
