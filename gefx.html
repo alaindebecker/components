@@ -2,9 +2,11 @@
 <title>Graphe</title>
 
 <style>
-//	svg { background: lightyellow; }
-	circle:hover { stroke: black; z-index: 1; }
-	polyline { marker-mid: url(#arrow); fill:none; stroke: darkgrey; }
+	* { font-family: sans-serif; font-size: small; }
+	svg circle:hover { stroke: black; z-index: 1; }
+	svg polyline { marker-mid: url(#arrow); fill:none; stroke: darkgrey; }
+	svg text { display: none; fill: grey; }
+	.node:hover text { display: block; }
 	#arrow { fill:darkgrey; stroke: darkgrey; }
 	#arrow:hover { fill:black; stroke: black; }
 </style>
@@ -12,18 +14,31 @@
 <script id="api">
 var arrowPosition = .618;
 function createNode(id){
-	var node = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+	var node = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+	node.id = id ? id : new Date().getTime();
+	node.classList.add('node');
 	node.setAttribute('onmousedown', "mousedown(event)");
 	node.setAttribute('onwheel', "wheel(event)");
-	node.setAttribute('cx', "100");
-	node.setAttribute('cy', "100");
-	node.setAttribute('r', "10");
-	node.setAttribute('stroke', "darkgrey");
-	node.setAttribute('stroke-width', "1");
-	node.setAttribute('fill', "url('#blue')");
-	node.id = id ? id : new Date().getTime();
+	node.setAttribute('x', "100");
+	node.setAttribute('y', "100");
+
+	var circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+	circle.setAttribute('cx', "11");
+	circle.setAttribute('cy', "11");
+	circle.setAttribute('r', "10");
+	circle.setAttribute('stroke', "darkgrey");
+	circle.setAttribute('stroke-width', "1");
+	circle.setAttribute('fill', "url('#blue')");
+
+	var text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+	text.setAttribute('x', 25);
+	text.setAttribute('y', 16);
+	text.innerHTML = 'Hello';
+
 	var svg = document.querySelector('#svg_nodes');
 	svg.append(node);
+	node.append(circle);
+	node.append(text);
 	return node;
 }
 function copyNode(proto){
@@ -35,9 +50,8 @@ function copyNode(proto){
 	return node;
 }
 function moveNode(node, x, y){
-	var screen = document.querySelector('svg').getBoundingClientRect();
-	node.setAttribute('cx', x);
-	node.setAttribute('cy', y);
+	node.setAttribute('x', x);
+	node.setAttribute('y', y);
 	drawEdges();
 }
 function removeNode(node){
@@ -48,10 +62,21 @@ function removeNode(node){
 	node.parentElement.removeChild(node);
 }
 function setNodeSize(node, r){
-	node.setAttribute('r', r);
+	var x = Number(node.getAttribute('x')) + Number(node.querySelector('circle').getAttribute('cx'));
+	var y = Number(node.getAttribute('y')) + Number(node.querySelector('circle').getAttribute('cy'));
+	node.setAttribute('x', x-r-1);
+	node.setAttribute('y', y-r-1);
+	node.querySelector('circle').setAttribute('cx', r+1);
+	node.querySelector('circle').setAttribute('cy', r+1);
+	node.querySelector('circle').setAttribute('r', r);
+	node.querySelector('text').setAttribute('x', 2*r+5);
+	node.querySelector('text').setAttribute('y', r+5);
 }
 function getNodeSize(node){
-	return Number(node.getAttribute('r'));
+	return Number(node.querySelector('circle').getAttribute('r'));
+}
+function setNodeText(node, text){
+	node.querySelector('text').innerHTML = text;
 }
 
 function createEdge(source, target){
@@ -71,7 +96,7 @@ function removeEdge(edge){
 }
 
 function clear(){
-	for(var node of document.querySelectorAll('#svg_nodes circle:not(.prototype)'))
+	for(var node of document.querySelectorAll('#svg_nodes svg:not(.prototype)'))
 		removeNode(node);
 }
 
@@ -79,10 +104,10 @@ function drawEdges(){
 	for(var edge of document.querySelectorAll('polyline')){
 		var source = document.getElementById(edge.getAttribute('source'));
 		var target = document.getElementById(edge.getAttribute('target'));
-		var x1 = source.getAttribute('cx');
-		var y1 = source.getAttribute('cy');
-		var x3 = target.getAttribute('cx');
-		var y3 = target.getAttribute('cy');
+		var x1 = Number(source.getAttribute('x'))+Number(source.querySelector('circle').getAttribute('cx'));
+		var y1 = Number(source.getAttribute('y'))+Number(source.querySelector('circle').getAttribute('cy'));
+		var x3 = Number(target.getAttribute('x'))+Number(target.querySelector('circle').getAttribute('cx'));
+		var y3 = Number(target.getAttribute('y'))+Number(target.querySelector('circle').getAttribute('cy'));
 		var x2 = (1-arrowPosition)*x1 + arrowPosition*x3;
 		var y2 = (1-arrowPosition)*y1 + arrowPosition*y3;
 		
@@ -95,7 +120,7 @@ loadFile = function(file){
 	f.onload = function(event){
 		parser = new DOMParser();
 		xml = parser.parseFromString(f.result, "text/xml");
-		console.log(xml);
+
 		clear();
 		var xMin = Infinity;
 		var xMax = -Infinity;
@@ -113,7 +138,8 @@ loadFile = function(file){
 		var scr = document.querySelector('svg').getBoundingClientRect();
 		for(var n of xml.querySelectorAll('node')){
 			var node = createNode(n.id);
-			setNodeSize(node, n.querySelector('size').getAttribute('value'));
+			setNodeSize(node, n.querySelector('size').getAttribute('value')-1);
+			setNodeText(node, n.getAttribute('label'));
 			var pos = n.querySelector('position');
 			var x = Number(pos.getAttribute('x'));
 			var y = Number(pos.getAttribute('y'));
@@ -161,15 +187,15 @@ saveFile = function(){
 
 
 <script id="gui">
-var drag;
+var drag, dragX, dragY;
 function mousedown(event){
-	drag = event.target;
+	drag = event.target.parentElement;
 	event.preventDefault();
-	if(drag.tagName=="circle"){
-		drag.x = drag.getAttribute("cx");
-		drag.y = drag.getAttribute("cy");
-		drag.dx = event.clientX - drag.x;
-		drag.dy = event.clientY - drag.y;
+	if(drag.classList.contains("node")){
+		dragX = drag.getAttribute("x");
+		dragY = drag.getAttribute("y");
+		drag.dx = event.clientX - dragX;
+		drag.dy = event.clientY - dragY;
 		var nodes = document.querySelector('#svg_nodes');
 		nodes.insertBefore(drag, nodes.firstChild);
 	}
@@ -184,10 +210,11 @@ onmousemove = (event) => {
 	}
 }
 onmouseup = (event) => {
-	// TODO: May be called for nodes out of the board
-	if(drag && event.target && drag!=event.target){
-		createEdge(event.target.id, drag.id);
-		moveNode(drag, drag.x, drag.y);
+	var source = event.target.parentElement;
+	var target = drag;
+	if(source && target && source!=target){
+		createEdge(source.id, target.id);
+		moveNode(drag, dragX, dragY);
 	}
 	drag = null;
 }
@@ -199,7 +226,7 @@ function clickArrow(event){
 	console.log(!drag, event);
 }
 function wheel(event){
-	var node = event.target;
+	var node = event.target.parentElement;
 	if(!node.classList.contains('prototype'))
 		setNodeSize(node, (1+event.deltaY/25)*getNodeSize(node));
 }
@@ -261,12 +288,33 @@ onkeydown = function(event){
 	<g id="svg_edges"></g>
 
 	<g id="svg_nodes">
-		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="11"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#blue')" />
-		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="36"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#green')" />
-		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="61"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#yellow')" />
-		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="86"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#orange')" />
-		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="111" r="10" stroke="darkgrey" stroke-width="1" fill="url('#red')" />
-		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="136" r="10" stroke="darkgrey" stroke-width="1" fill="url('#purple')" />
-		<circle class="prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" cx="11" cy="161" r="10" stroke="darkgrey" stroke-width="1" fill="url('#grey')" />
+		<svg class="node prototype" onmousedown="mousedown(event)" onwheel="wheel(event)" x="0" y="0">
+			<circle cx="11" cy="11" r="10" stroke="darkgrey" stroke-width="1" fill="url('#blue')" />
+			<text x="25" y="16" >Bleu</text>
+		</svg>
+		<svg class="node prototype" onmousedown="mousedown(event)" onwheel="wheel(event)"x="0", y="25">
+			<circle class="prototype" onwheel="wheel(event)" cx="11" cy="11" r="10" stroke="darkgrey" stroke-width="1" fill="url('#green')" />
+			<text x="25" y="16" >Vert</text>
+		</svg>
+		<svg class="node prototype" onmousedown="mousedown(event)" onwheel="wheel(event)"x="0", y="50">
+			<circle class="prototype" onwheel="wheel(event)" cx="11" cy="11"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#yellow')" />
+			<text x="25" y="16" >Jaune</text>
+		</svg>
+		<svg class="node prototype" onmousedown="mousedown(event)" onwheel="wheel(event)"x="0", y="75">
+			<circle class="prototype" onwheel="wheel(event)" cx="11" cy="11"  r="10" stroke="darkgrey" stroke-width="1" fill="url('#orange')" />
+			<text x="25" y="16" >Orange</text>
+		</svg>
+		<svg class="node prototype" onmousedown="mousedown(event)" onwheel="wheel(event)"x="0", y="100">
+			<circle class="prototype" onwheel="wheel(event)" cx="11" cy="11" r="10" stroke="darkgrey" stroke-width="1" fill="url('#red')" />
+			<text x="25" y="16" >Rouge</text>
+		</svg>
+		<svg class="node prototype" onmousedown="mousedown(event)" onwheel="wheel(event)"x="0", y="125">
+			<circle class="prototype" onwheel="wheel(event)" cx="11" cy="11" r="10" stroke="darkgrey" stroke-width="1" fill="url('#purple')" />
+			<text x="25" y="16" >Violet</text>
+		</svg>
+		<svg class="node prototype" onmousedown="mousedown(event)" onwheel="wheel(event)"x="0", y="150">
+			<circle class="prototype" onwheel="wheel(event)" cx="11" cy="11" r="10" stroke="darkgrey" stroke-width="1" fill="url('#grey')" />
+			<text x="25" y="16" >Gris</text>
+		</svg>
 	</g>
 </svg>
