@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<title>Graphe</title>
 
 <style>
 //	svg { background: lightyellow; }
@@ -123,6 +124,7 @@ loadFile = function(file){
 		for(var e of xml.querySelectorAll('edge')){
 			createEdge(e.getAttribute('source'), e.getAttribute('target'));
 		}
+		document.title = file.name.replace(/\.[^\.]*$/, '');
 	}
 	f.readAsText(file);
 }
@@ -151,7 +153,7 @@ saveFile = function(){
 	xml += '</gexf>';
 
 	var link = document.createElement("a");
-    link.download = 'name';
+    link.download = document.title+'.gexf';
     link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(xml);
     link.click();
 }
