@@ -9,6 +9,7 @@
 	.node:hover text { display: block; }
 	#arrow { fill:darkgrey; stroke: darkgrey; }
 	#arrow:hover { fill:black; stroke: black; }
+
 </style>
 
 <script id="api">
@@ -80,15 +81,21 @@ function setNodeText(node, text){
 }
 
 function createEdge(source, target){
+	var mouse = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+	mouse.setAttribute("source", source);
+	mouse.setAttribute("target", target);
+	mouse.setAttribute('stroke-width', "8");
+	mouse.setAttribute('pointer-events', "all");
+	mouse.setAttribute('onmouseover', "cutArrow(event)");
+	mouse.setAttribute('onclick', "clickArrow(event)");
+	document.querySelector('#svg_edges').appendChild(mouse);
+
 	var edge = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
 	edge.id = new Date().getTime();
 	edge.setAttribute("source", source);
 	edge.setAttribute("target", target);
 	document.querySelector('#svg_edges').appendChild(edge);
-	var mouse = document.createElementNS("http://www.w3.org/2000/svg", 'use');
-	mouse.setAttribute('href', '#'+edge.id);
-	mouse.setAttribute('onclick', "clickArrow(this)");
-	document.querySelector('#svg_edges').appendChild(mouse);
+
 	drawEdges();
 }
 function removeEdge(edge){
@@ -101,6 +108,14 @@ function clear(){
 }
 
 function drawEdges(){
+	for(var edge of document.querySelectorAll('line')){
+		var source = document.getElementById(edge.getAttribute('source'));
+		var target = document.getElementById(edge.getAttribute('target'));
+		edge.setAttribute('x1', Number(source.getAttribute('x'))+Number(source.querySelector('circle').getAttribute('cx')));
+		edge.setAttribute('y1', Number(source.getAttribute('y'))+Number(source.querySelector('circle').getAttribute('cy')));
+		edge.setAttribute('x2', Number(target.getAttribute('x'))+Number(target.querySelector('circle').getAttribute('cx')));
+		edge.setAttribute('y2', Number(target.getAttribute('y'))+Number(target.querySelector('circle').getAttribute('cy')));
+	}
 	for(var edge of document.querySelectorAll('polyline')){
 		var source = document.getElementById(edge.getAttribute('source'));
 		var target = document.getElementById(edge.getAttribute('target'));
@@ -138,7 +153,7 @@ loadFile = function(file){
 		var scr = document.querySelector('svg').getBoundingClientRect();
 		for(var n of xml.querySelectorAll('node')){
 			var node = createNode(n.id);
-			setNodeSize(node, n.querySelector('size').getAttribute('value')-1);
+			setNodeSize(node, n.querySelector('size').getAttribute('value')*2.5);
 			setNodeText(node, n.getAttribute('label'));
 			var pos = n.querySelector('position');
 			var x = Number(pos.getAttribute('x'));
@@ -219,8 +234,12 @@ onmouseup = (event) => {
 	drag = null;
 }
 function cutArrow(event){
-	if(!drag)
-		console.log(!drag, event);
+	if(!drag && event.buttons==1){
+		var source = event.target.getAttribute('source');
+		var target = event.target.getAttribute('target');
+		for(var edge of document.querySelectorAll('#svg_edges *[source="'+source+'"][target="'+target+'"]'))
+			removeEdge(edge);
+	}
 }
 function clickArrow(event){
 	console.log(!drag, event);
