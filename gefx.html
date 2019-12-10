@@ -2,47 +2,74 @@
 
 <style>
 //	svg { background: lightyellow; }
-
 	circle:hover { stroke: black; z-index: 1; }
 	polyline { marker-mid: url(#arrow); fill:none; stroke: darkgrey; }
 	#arrow { fill:darkgrey; stroke: darkgrey; }
 	#arrow:hover { fill:black; stroke: black; }
-
 </style>
 
 <script id="api">
 var arrowPosition = .618;
-
+function createNode(id){
+	var node = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+	node.setAttribute('onmousedown', "mousedown(event)");
+	node.setAttribute('cx', "100");
+	node.setAttribute('cy', "100");
+	node.setAttribute('r', "10");
+	node.setAttribute('stroke', "darkgrey");
+	node.setAttribute('stroke-width', "1");
+	node.setAttribute('fill', "url('#blue')");
+	node.id = id ? id : new Date().getTime();
+	var svg = document.querySelector('#svg_nodes');
+	svg.append(node);
+	return node;
+}
 function copyNode(proto){
 	var node = proto.cloneNode(true);
 	Object.assign(node, proto);
 	node.id = new Date().getTime();
-	document.querySelector('svg').append(node);
+	var svg = document.querySelector('#svg_nodes');
+	svg.insertBefore(node, svg.firstChild);
 	return node;
 }
 function moveNode(node, x, y){
-	//TODO: Check if stay on board
 	var screen = document.querySelector('svg').getBoundingClientRect();
-	if(screen.left<x && x<screen.right)
-		node.setAttribute('cx', x);
-	if(screen.top<y && y<screen.bottom)
-		node.setAttribute('cy', y);
+	node.setAttribute('cx', x);
+	node.setAttribute('cy', y);
 	drawEdges();
 }
+function removeNode(node){
+	for(var edge of document.querySelectorAll('#svg_edges [source="'+node.id+'"]'))
+		removeEdge(edge);
+	for(var edge of document.querySelectorAll('#svg_edges [target="'+node.id+'"]'))
+		removeEdge(edge);
+	node.parentElement.removeChild(node);
+}
+function setNodeSize(node, r){
+	node.setAttribute('r', r);
+}
+
 function createEdge(source, target){
-	console.log(source, target);
 	var edge = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
 	edge.id = new Date().getTime();
-	edge.setAttribute("source", source.id);
-	edge.setAttribute("target", target.id);
+	edge.setAttribute("source", source);
+	edge.setAttribute("target", target);
 	document.querySelector('#svg_edges').appendChild(edge);
-
 	var mouse = document.createElementNS("http://www.w3.org/2000/svg", 'use');
 	mouse.setAttribute('href', '#'+edge.id);
 	mouse.setAttribute('onclick', "clickArrow(this)");
 	document.querySelector('#svg_edges').appendChild(mouse);
 	drawEdges();
 }
+function removeEdge(edge){
+	edge.parentElement.removeChild(edge);
+}
+
+function clear(){
+	for(var node of document.querySelectorAll('#svg_nodes circle:not(.prototype)'))
+		removeNode(node);
+}
+
 function drawEdges(){
 	for(var edge of document.querySelectorAll('polyline')){
 		var source = document.getElementById(edge.getAttribute('source'));
@@ -57,6 +84,72 @@ function drawEdges(){
 		var points = x1+','+y1+' '+x2+','+y2+' '+x3+','+y3;
 		edge.setAttribute("points", points);
 	}
+}
+loadFile = function(file){
+	var f = new FileReader();
+	f.onload = function(event){
+		parser = new DOMParser();
+		xml = parser.parseFromString(f.result, "text/xml");
+		console.log(xml);
+		clear();
+		var xMin = Infinity;
+		var xMax = -Infinity;
+		var yMin = Infinity;
+		var yMax = -Infinity;
+		for(var n of xml.querySelectorAll('node')){
+			var pos = n.querySelector('position');
+			var x = Number(pos.getAttribute('x'));
+			var y = Number(pos.getAttribute('y'));
+			if(x<xMin) xMin = x;
+			if(x>xMax) xMax = x;
+			if(y<yMin) yMin = y;
+			if(y>yMax) yMax = y;
+		}
+		var scr = document.querySelector('svg').getBoundingClientRect();
+		for(var n of xml.querySelectorAll('node')){
+			var node = createNode(n.id);
+			setNodeSize(node, n.querySelector('size').getAttribute('value'));
+			var pos = n.querySelector('position');
+			var x = Number(pos.getAttribute('x'));
+			var y = Number(pos.getAttribute('y'));
+			x = ((x-xMin)/(xMax-xMin) *.8 +.1 ) *scr.width +scr.left;
+			y = ((y-yMin)/(yMax-yMin) *.8 +.1 ) *scr.height +scr.top;
+			moveNode(node, x, y);
+		}
+		for(var e of xml.querySelectorAll('edge')){
+			createEdge(e.getAttribute('source'), e.getAttribute('target'));
+		}
+	}
+	f.readAsText(file);
+}
+saveFile = function(){
+	var xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+	xml += '<gexf xmlns="http://www.gexf.net/1.3" version="1.3" xmlns:viz="http://www.gexf.net/1.3/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.3 http://www.gexf.net/1.3/gexf.xsd">\n';
+	xml += '<meta lastmodifieddate="'+new Date().toISOString().substr(0,10)+'">\n';
+    xml += '    <creator></creator>\n';
+    xml += '    <description></description>\n';
+	xml += '</meta>\n';
+	
+	xml += '<nodes>\n';
+	for(var node of document.querySelectorAll('#svg_nodes circle:not(.prototype)')){
+		xml += '    <node id="'+node.id+'">\n';
+		xml += '      <viz:size value="'+node.getAttribute('r')+'"></viz:size>\n';
+		xml += '      <viz:position x="'+node.getAttribute('cx')+'" y="'+node.getAttribute('cy')+'"></viz:position>\n';
+		xml += '    </node>\n';
+	}
+	xml += '</nodes>\n';
+
+	var edge_id = 0;
+	xml += '<edges>\n';
+	for(var edge of document.querySelectorAll('#svg_edges polyline'))
+		xml += '<edge id="'+(edge_id++)+'" source="'+edge.getAttribute('source')+'" target="'+edge.getAttribute('target')+'"></edge>\n';
+	xml += '</edges>\n';
+	xml += '</gexf>';
+
+	var link = document.createElement("a");
+    link.download = 'name';
+    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(xml);
+    link.click();
 }
 </script>
 
@@ -85,9 +178,9 @@ onmousemove = (event) => {
 	}
 }
 onmouseup = (event) => {
-	// TODO: May be called foe nodes out of the board
+	// TODO: May be called for nodes out of the board
 	if(drag && event.target && drag!=event.target){
-		createEdge(event.target, drag);
+		createEdge(event.target.id, drag.id);
 		moveNode(drag, drag.x, drag.y);
 	}
 	drag = null;
@@ -98,6 +191,18 @@ function cutArrow(event){
 }
 function clickArrow(event){
 	console.log(!drag, event);
+}
+
+onload = function(){
+	var svg = document.querySelector('svg');
+	svg.addEventListener("dragenter", function(e) { e.stopPropagation(); e.preventDefault(); }, false);
+	svg.addEventListener("dragover", function(e) { e.stopPropagation(); e.preventDefault(); }, false);
+	svg.addEventListener("drop", function(e){ e.stopPropagation(); e.preventDefault(); loadFile(e.dataTransfer.files[0]);}, false);
+}
+onkeydown = function(event){
+	event.preventDefault();
+	if(event.ctrlKey && event.key=='s')
+		saveFile();
 }
 </script>
 
@@ -155,4 +260,3 @@ function clickArrow(event){
 		<circle class="prototype" onmousedown="mousedown(event)" cx="11" cy="161" r="10" stroke="darkgrey" stroke-width="1" fill="url('#grey')" />
 	</g>
 </svg>
-
