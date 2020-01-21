@@ -1,0 +1,39 @@
+<!-- Read tree from indented file --> 
+<script>
+var data = {}
+
+var x = new XMLHttpRequest()
+x.open('get', 'classicmodels.tree')
+x.overrideMimeType('text/plain')
+x.onload = function(){
+	var stack = [-1];
+	var ids = [ null ];
+	var id = 0;
+	for(var line of x.response.split(/\r?\n/g)){
+		var p = line.search(/\S/)
+		if(p==stack[stack.length-1]){
+			stack.pop()
+			ids.pop()
+		}
+		if(p>=stack[stack.length-1]){
+			stack.push(p)
+			ids.push(id++)
+		}
+		while(p<stack[stack.length-1]){
+			stack.pop()
+			ids.pop()
+		}
+		if(p>=0){
+			var parent = ids[ids.length-1]
+			if(parent){
+				data[id] = { parent: parent, child: [], text: line.trim() }
+				data[parent].child.push(id)
+			}else
+				data[id] = { child: [], text: line.trim() }
+		}
+	}
+	console.log(data)
+}
+x.send()
+
+</script>
