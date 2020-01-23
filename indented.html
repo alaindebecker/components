@@ -1,0 +1,84 @@
+<script>
+var data = []
+
+loadIdented = function(file, callback){
+	var x = new XMLHttpRequest()
+	x.open('get', file)
+	x.overrideMimeType('text/plain')
+	x.onload = function(){
+		var stack = [-1];
+		var ids = [null];
+		var id = 0;
+		for(var line of x.response.split(/\r?\n/g)){
+			var p = line.search(/\S/)
+			if(p>=0){
+				//console.log(line)
+				id++
+
+				if(p==stack[stack.length-1]){
+					stack.pop()
+					ids.pop()
+				}
+				if(p>=stack[stack.length-1]){
+					stack.push(p)
+					ids.push(id)
+				}
+				while(p<stack[stack.length-1]){
+					stack.pop()
+					ids.pop()
+					ids[ids.length-1] = id
+				}
+
+				var parent = ids[ids.length-2]
+				//console.log(id, parent, ids, line.substr(p))
+
+				line = line.split(/\t/g);
+				var text = line[0].substr(p)
+				var size = (line.length>1) ? Number(line[1]) : 1
+				
+				if(parent){
+					data[id] = {parent: parent, children: [], text: text, size: size}
+					data[parent].children.push(id)
+				}
+				else
+					data[id] = {children: [], text: text, size: size}
+
+				var cumul = parent
+				while(cumul){
+					data[cumul].size += size
+					cumul = data[cumul].parent
+				}
+			}
+		}
+		data[1].start = 0
+		data[1].finish = 1
+		computeSize(1, data[1].size)
+//		callback(1, '');
+	}
+	x.send();
+}
+
+computeSize = function(node, tot){
+	console.log(data[node].text, start, end, tot)
+//	for(var child of data[node].children){
+//		explore(child, level+'  ')
+//	}
+}
+
+
+explore = function(node, level){
+	console.log(level+data[node].text+'\t'+data[node].size)
+	for(var child of data[node].children){
+		explore(child, level+'  ')
+	}
+}
+dump = function(){
+	for(var id=1; id<data.length; id++)
+		console.log(id, data[id])
+}
+
+loadIdented('ClassicModels.txt', explore);
+//loadIdented('Bibliothèque.txt', explore);
+//loadIdented('TreeOfLife.txt', explore);
+//loadIdented('Desktop.txt', explore);
+</script>
