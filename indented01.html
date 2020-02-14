@@ -1,0 +1,144 @@
+<style>
+	* { font-family: sans-serif; font-size: small; cursor: default; }
+	* html, body, svg { margin: 0; padding: 0}
+	svg { border-radius: 50%; border: 1px solid grey; }
+	svg * { stroke: grey; fill: none; }
+	svg text { stroke: none; fill: black; dominant-baseline: middle; text-anchor: middle }
+	svg text { fill: lightgrey; }
+	svg text:hover { fill: black; }
+</style>
+
+<svg><!--circle id="space"/--></svg>
+<script>
+var svg, Ox, Oy, R;
+svg = document.querySelector('svg')
+var size = .8*Math.min(innerWidth, innerHeight);
+svg.style.width = size+'px'
+svg.style.height = size+'px'
+svg.style.marginLeft = (innerWidth-size)/2+'px'
+svg.style.marginTop = (innerHeight-size)/2+'px'
+
+var box = svg.getBoundingClientRect()
+Ox = size /2
+Oy = size /2
+R  = size /2
+
+</script>
+
+
+
+<script>
+data = {
+	"Mgmt": { start:0, finish: 3},
+	"Diane Murphy": {start: 0, finish: 1},
+	"Mary Patterson" : {start: 1, finish : 2},
+	"Jeff Firrelli" : {start: 2, finish: 3},
+	"APAC" : {start: 3, finish: 9},
+	"Sydney" : {start: 3, finish: 7},
+	"William Patterson" : {start: 3, finish: 4},
+	"Andy Fixter" : {start: 4, finish: 5},
+	"Peter Marsh" : {start: 5, finish: 6},
+	"Tom King" : {start: 6, finish: 7},
+	"Japan" : {start: 7, finish: 9},
+	"Mami Nishi" : {start: 7, finish: 8},
+	"Yoshimi Kato" : {start: 8, finish: 9},
+	"EMEA" : {start: 9, finish: 16},
+	"Paris" : {start: 9, finish: 13},
+	"Gerard Bondur" : {start: 9, finish: 10},
+	"Loui Bondur" : {start: 10, finish: 11},
+	"Gerard Hernandez" : {start: 11, finish: 12},
+	"Pamela Castillo" : {start: 12, finish: 13},
+	"London" : {start: 13, finish: 16},
+	"Larry Bott" : {start: 13, finish: 14},
+	"Barry Jones" : {start: 14, finish: 15},
+	"Martin Gerard" : {start: 15, finish: 16},
+	"NOAM" : {start: 16, finish: 23},
+	"San Francisco" : {start: 16, finish: 19},
+	"Anthony Bow" : {start: 16, finish: 17},
+	"Leslie Jennings" : {start: 17, finish: 18},
+	"Leslie Thompson" : {start: 18, finish: 19},
+	"Boston" : {start: 19, finish: 21},
+	"Julie Firrelli" : {start: 19, finish: 20},
+	"Steve Patterson" : {start: 20, finish: 21},
+	"NYC" : {start: 21, finish: 23},
+	"Foon Yue Tseng" : {start: 21, finish: 22},
+	"George Vanau" : {start: 22, finish: 23}
+}
+
+var max = 23 // Le plus grand des finish
+/* Beltrami
+for(var s of Object.keys(data)){
+	var x1 = Ox+R*Math.sin(2*Math.PI *data[s].start / max)
+	var y1 = Oy-R*Math.cos(2*Math.PI *data[s].start / max)
+	var x2 = Ox+R*Math.sin(2*Math.PI *data[s].finish / max)
+	var y2 = Oy-R*Math.cos(2*Math.PI *data[s].finish / max)
+	var x3 = (x1+x2)/2
+	var y3 = (y1+y2)/2
+
+	var q = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+	q.setAttribute('x', x3)
+	q.setAttribute('y', y3)
+	q.innerHTML = s
+	svg.appendChild(q)
+
+	var p = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+	p.setAttribute('id', s)
+	p.setAttribute('x1', x1)
+	p.setAttribute('y1', y1)
+	p.setAttribute('x2', x2)
+	p.setAttribute('y2', y2)
+//	svg.appendChild(p)
+}
+//*/
+
+//* Poincarré
+for(var s of Object.keys(data)){
+	var t1 = 2*Math.PI *data[s].start / max
+	var t2 = 2*Math.PI *data[s].finish / max
+	var t  = (t2+t1)/2
+	var dt = (t2-t1)/2
+	
+	var cx = Ox+R*Math.sin(t)/Math.cos(dt)
+	var cy = Oy-R*Math.cos(t)/Math.cos(dt)
+	var r  = R*Math.sin(dt)/Math.cos(dt)
+
+	var x = Ox+R*Math.sin(t)*(1-Math.sin(dt))/Math.cos(dt)
+	var y = Oy-R*Math.cos(t)*(1-Math.sin(dt))/Math.cos(dt)
+	var q = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+	q.setAttribute('x', x)
+	q.setAttribute('y', y)
+	q.innerHTML = s
+	svg.appendChild(q)
+
+	var p = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+	p.setAttribute('id', s)
+	p.setAttribute('cx', cx)
+	p.setAttribute('cy', cy)
+	p.setAttribute('r', r)
+	svg.appendChild(p)
+}
+//*/
+</script>
+
+<script>
+var drag
+onmousedown = function(event){
+	event.preventDefault()
+	if(event.target==svg){
+		drag = svg
+		drag.x = event.clientX
+		drag.y = event.clientY
+		console.log(event.clientX, event.clientY)
+	}
+}
+onmousemove = function(event){
+	event.preventDefault()
+	if(drag){
+		console.log(event.clientX, event.clientY)
+	}
+}
+onmouseup = function(event){
+	drag = null
+}
+
+</script>
